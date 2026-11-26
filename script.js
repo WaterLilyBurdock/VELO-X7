@@ -90,61 +90,10 @@
     gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
     gsap.to(path, {
       strokeDashoffset: 0,
-      duration: 1.1,
-      delay: 0.2 + idx * 0.1,
+      duration: 1.15,
+      delay: 0.75 + idx * 0.1,
       ease: 'power3.out',
     });
-  });
-
-  /* Бесконечное вращение колёс и шатунов с регулируемой скоростью */
-  const wheelAnim = gsap.to('.wheel-spokes', {
-    rotation: 360,
-    transformOrigin: 'center center',
-    duration: 1.2,
-    repeat: -1,
-    ease: 'none',
-  });
-
-  const crankAnim = gsap.to('.crank-spin', {
-    rotation: 360,
-    transformOrigin: 'center center',
-    duration: 1.6,
-    repeat: -1,
-    ease: 'none',
-  });
-
-  const windAnim = gsap.to('.wind-line', {
-    x: -90,
-    opacity: 0,
-    duration: 1.0,
-    stagger: 0.2,
-    repeat: -1,
-    ease: 'power1.in',
-  });
-
-  const roadAnim = gsap.to('.road-dash', {
-    x: -75,
-    opacity: 0.1,
-    duration: 0.9,
-    stagger: 0.15,
-    repeat: -1,
-    ease: 'none',
-  });
-
-  gsap.to('.bike-chassis', {
-    y: -3,
-    duration: 1.1,
-    yoyo: true,
-    repeat: -1,
-    ease: 'sine.inOut',
-  });
-
-  /* Бегущая строка Motion-тикера */
-  gsap.to('.marquee__track', {
-    xPercent: -50,
-    duration: 16,
-    repeat: -1,
-    ease: 'none',
   });
 
   /* Переключение цвета рамы */
@@ -158,9 +107,9 @@
 
   /* Переключение режимов скорости (Спринт / Круиз / Подъём) */
   const modeSpecs = {
-    sprint: { scale: 1.5, telemetry: '48 КМ/Ч · 310 ВТ', label: 'РЕЖИМ: СПРИНТ' },
-    cruise: { scale: 1.0, telemetry: '30 КМ/Ч · 185 ВТ', label: 'РЕЖИМ: КРУИЗ' },
-    climb: { scale: 0.55, telemetry: '18 КМ/Ч · 260 ВТ', label: 'РЕЖИМ: ПОДЪЁМ' },
+    sprint: { wheel: '0.65s', crank: '0.95s', wind: '0.75s', road: '0.6s', telemetry: '48 КМ/Ч · 310 ВТ', label: 'РЕЖИМ: СПРИНТ' },
+    cruise: { wheel: '1.15s', crank: '1.65s', wind: '1.25s', road: '1.05s', telemetry: '30 КМ/Ч · 185 ВТ', label: 'РЕЖИМ: КРУИЗ' },
+    climb: { wheel: '1.9s', crank: '2.4s', wind: '2.0s', road: '1.75s', telemetry: '18 КМ/Ч · 260 ВТ', label: 'РЕЖИМ: ПОДЪЁМ' },
   };
   const telemetryEl = document.getElementById('telemetryReadout');
   const modeBadge = document.getElementById('modeBadge');
@@ -170,9 +119,11 @@
       const m = modeSpecs[btn.dataset.mode];
       if (!m) return;
       document.querySelectorAll('.cam-btn[data-mode]').forEach((b) => b.classList.toggle('is-active', b === btn));
-      [wheelAnim, crankAnim, windAnim, roadAnim].forEach((tw) => {
-        gsap.to(tw, { timeScale: m.scale, duration: 0.6, ease: 'power2.out' });
-      });
+      const root = document.documentElement.style;
+      root.setProperty('--wheel-dur', m.wheel);
+      root.setProperty('--crank-dur', m.crank);
+      root.setProperty('--wind-dur', m.wind);
+      root.setProperty('--road-dur', m.road);
       if (telemetryEl) telemetryEl.textContent = m.telemetry;
       if (modeBadge) modeBadge.textContent = m.label;
     });

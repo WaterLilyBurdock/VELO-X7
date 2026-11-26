@@ -305,10 +305,48 @@ ul { list-style: none; }
 .bike-tire { stroke: #CBD5E1; stroke-width: 6; }
 .bike-rim { stroke: rgba(148, 163, 184, 0.5); stroke-width: 2; }
 .bike-hub { fill: var(--bike-color, #38BDF8); transition: fill 0.35s; }
+.wheel-spokes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: veloSpin var(--wheel-dur, 0.9s) linear infinite;
+}
+.crank-spin {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: veloSpin var(--crank-dur, 1.3s) linear infinite;
+}
+.bike-chassis { animation: veloFloat 2.2s ease-in-out infinite; }
 .wheel-spokes line { stroke: rgba(244, 246, 250, 0.45); stroke-width: 1.6; }
-.wind-line { stroke: rgba(56, 189, 248, 0.42); stroke-width: 2; stroke-linecap: round; }
+.wind-line {
+  stroke: rgba(56, 189, 248, 0.45);
+  stroke-width: 2;
+  stroke-linecap: round;
+  animation: veloWind var(--wind-dur, 1s) ease-in infinite;
+}
+.wind-line:nth-child(2) { animation-delay: -0.35s; }
+.wind-line:nth-child(3) { animation-delay: -0.7s; }
 .road-base { stroke: rgba(255, 255, 255, 0.16); stroke-width: 1.8; }
-.road-dash { stroke: rgba(255, 255, 255, 0.35); stroke-width: 2.2; stroke-linecap: round; }
+.road-dash {
+  stroke: rgba(255, 255, 255, 0.35);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  animation: veloRoad var(--road-dur, 0.85s) linear infinite;
+}
+.road-dash:nth-child(6) { animation-delay: -0.28s; }
+.road-dash:nth-child(7) { animation-delay: -0.56s; }
+
+@keyframes veloSpin { to { transform: rotate(360deg); } }
+@keyframes veloFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@keyframes veloWind {
+  0% { transform: translateX(30px); opacity: 0; }
+  30% { opacity: 0.7; }
+  100% { transform: translateX(-95px); opacity: 0; }
+}
+@keyframes veloRoad {
+  0% { transform: translateX(40px); opacity: 0.15; }
+  50% { opacity: 0.55; }
+  100% { transform: translateX(-85px); opacity: 0.08; }
+}
 
 .motion-stage__bar {
   position: absolute;
@@ -344,7 +382,10 @@ ul { list-style: none; }
   letter-spacing: 0.16em;
   color: var(--muted);
   white-space: nowrap;
+  animation: veloMarquee 18s linear infinite;
 }
+
+@keyframes veloMarquee { to { transform: translateX(-50%); } }
 
 .marquee__track i {
   width: 6px;
