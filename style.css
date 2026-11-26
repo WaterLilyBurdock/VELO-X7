@@ -1,6 +1,6 @@
 /* ==========================================================================
-   BMW 5 Series (F10) — Тёмный 3D-шоурум
-   Графит + M-Blue + Матовое серебро · WebGL Three.js · GSAP
+   VELO X7 — Карбоновые велосипеды и Motion-графика
+   Графит + Циан + Синий кобальт · GSAP Motion
    ========================================================================== */
 
 :root {
@@ -47,10 +47,9 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 ul { list-style: none; }
 
 .container { width: min(100% - 44px, var(--container)); margin-inline: auto; }
-.section { position: relative; z-index: 2; padding: clamp(84px, 10vw, 136px) 0; pointer-events: none; }
-.section .container { pointer-events: auto; }
+.section { position: relative; z-index: 2; padding: clamp(84px, 10vw, 136px) 0; }
 
-/* Прелоадер */
+/* Загрузочный экран */
 .loader {
   position: fixed;
   inset: 0;
@@ -60,49 +59,60 @@ ul { list-style: none; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 18px;
+  will-change: transform, opacity;
 }
 
-.loader__line {
-  width: 150px;
+.loader__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.loader__wheel {
+  width: 56px;
+  height: 56px;
+  animation: loaderSpin 1.1s linear infinite;
+}
+
+@keyframes loaderSpin { to { transform: rotate(360deg); } }
+
+.loader__title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+.loader__title span { color: var(--m-cyan); }
+
+.loader__track {
+  width: min(220px, 64vw);
   height: 2px;
   background: rgba(255, 255, 255, 0.12);
-  position: relative;
+  border-radius: 2px;
   overflow: hidden;
 }
 
-.loader__line::after {
-  content: '';
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 45%;
+.loader__fill {
+  display: block;
+  width: 0%;
+  height: 100%;
   background: linear-gradient(90deg, var(--m-cyan), var(--m-blue), var(--m-red));
-  animation: sweep 0.85s var(--ease) infinite alternate;
+  transition: width 0.12s linear;
 }
-
-@keyframes sweep { from { transform: translateX(0); } to { transform: translateX(125%); } }
 
 .loader__meta {
   display: flex;
-  gap: 14px;
+  justify-content: space-between;
+  width: min(220px, 64vw);
   font-family: var(--font-mono);
-  font-size: 0.74rem;
-  letter-spacing: 0.16em;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
   color: var(--muted);
 }
 
 #loaderPct { color: var(--m-cyan); }
-
-.webgl-canvas {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  cursor: grab;
-}
-
-.webgl-canvas:active { cursor: grabbing; }
 
 .scroll-bar {
   position: fixed;

@@ -7,6 +7,8 @@
   const drawer = document.getElementById('mobDrawer');
   const loader = document.getElementById('loader');
   const loaderPct = document.getElementById('loaderPct');
+  const loaderFill = document.getElementById('loaderFill');
+  const inIframe = window.self !== window.top;
 
   burger?.addEventListener('click', () => {
     const open = drawer?.classList.toggle('is-open');
@@ -27,18 +29,24 @@
     e.target.reset();
   });
 
-  /* Прелоадер */
+  /* Загрузочный экран */
+  const setLoaderProgress = (val) => {
+    if (loaderPct) loaderPct.textContent = `${String(val).padStart(2, '0')}%`;
+    if (loaderFill) loaderFill.style.width = `${val}%`;
+  };
+
   const hideLoader = () => {
     if (!loader || loader.dataset.done) return;
     loader.dataset.done = '1';
-    if (loaderPct) loaderPct.textContent = '100%';
+    setLoaderProgress(100);
     document.body.classList.remove('is-loading');
 
     if (!prefersReducedMotion && typeof gsap !== 'undefined') {
       gsap.to(loader, {
-        opacity: 0,
-        duration: 0.45,
-        ease: 'power2.out',
+        yPercent: -100,
+        duration: 0.65,
+        delay: 0.18,
+        ease: 'power4.inOut',
         onComplete: () => {
           loader.remove();
           if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
@@ -57,14 +65,15 @@
     return;
   }
 
-  let pct = 18;
+  let pct = 12;
+  setLoaderProgress(pct);
   const pctTimer = setInterval(() => {
-    pct = Math.min(94, pct + 18);
-    if (loaderPct) loaderPct.textContent = `${String(pct).padStart(2, '0')}%`;
-  }, 85);
+    pct = Math.min(96, pct + 14);
+    setLoaderProgress(pct);
+  }, 70);
   const finishLoading = () => { clearInterval(pctTimer); hideLoader(); };
-  window.addEventListener('load', () => setTimeout(finishLoading, 180), { once: true });
-  setTimeout(finishLoading, 1400);
+  window.addEventListener('load', () => setTimeout(finishLoading, 380), { once: true });
+  setTimeout(finishLoading, 1300);
 
   gsap.registerPlugin(ScrollTrigger);
 
@@ -207,11 +216,26 @@
   const cursor = document.querySelector('.aura-cursor');
   const cursorLabel = document.querySelector('.aura-cursor__label');
 
-  if (canHover && cursor) {
-    gsap.set(cursor, { xPercent: -50, yPercent: -50, x: -100, y: -100 });
-    const mx = gsap.quickTo(cursor, 'x', { duration: 0.18, ease: 'power3.out' });
-    const my = gsap.quickTo(cursor, 'y', { duration: 0.18, ease: 'power3.out' });
-    window.addEventListener('mousemove', (e) => { mx(e.clientX); my(e.clientY); }, { passive: true });
+  /* Внутри iframe портфолио отключаем кастомный курсор, чтобы он не залагивал */
+  if (inIframe && cursor) cursor.remove();
+
+  if (canHover && cursor && !inIframe) {
+    let targetX = -100, targetY = -100, curX = -100, curY = -100, rafId = 0;
+    const stepCursor = () => {
+      curX += (targetX - curX) * 0.36;
+      curY += (targetY - curY) * 0.36;
+      cursor.style.transform = `translate3d(${curX}px, ${curY}px, 0) translate(-50%, -50%)`;
+      if (Math.abs(targetX - curX) > 0.4 || Math.abs(targetY - curY) > 0.4) {
+        rafId = requestAnimationFrame(stepCursor);
+      } else {
+        rafId = 0;
+      }
+    };
+    window.addEventListener('mousemove', (e) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+      if (!rafId) rafId = requestAnimationFrame(stepCursor);
+    }, { passive: true });
 
     document.addEventListener('mouseover', (e) => {
       const t = e.target.closest('a, button, .glass-card');
