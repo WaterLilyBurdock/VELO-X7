@@ -286,6 +286,16 @@
     }
   };
 
+  /* Фолбэк изображений велосипедов */
+  document.querySelectorAll('img[data-fallback]').forEach((img) => {
+    img.addEventListener('error', () => {
+      if (img.dataset.fb) return;
+      img.dataset.fb = '1';
+      const label = encodeURIComponent(img.dataset.fallback || 'VELO X7');
+      img.src = `data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500"><rect width="800" height="500" fill="%230B0E14"/><circle cx="230" cy="310" r="85" stroke="%2338BDF8" stroke-width="6" fill="none"/><circle cx="570" cy="310" r="85" stroke="%2338BDF8" stroke-width="6" fill="none"/><path d="M230 310 L365 310 L495 190 L330 190 Z M570 310 L495 190" stroke="%23F3F4F6" stroke-width="7" fill="none" stroke-linejoin="round"/><text x="48" y="88" fill="%2338BDF8" font-family="sans-serif" font-size="30" font-weight="700">${label}</text></svg>`;
+    });
+  });
+
   initNavAndForm();
   initLoader();
   initBikeControls();
