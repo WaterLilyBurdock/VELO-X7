@@ -92,7 +92,12 @@
 
   const initBikeControls = () => {
     document.querySelectorAll('.swatch').forEach((btn) => {
-      btn.addEventListener('click', () => applyBikeColor(btn.dataset.color));
+      btn.addEventListener('click', () => {
+        applyBikeColor(btn.dataset.color);
+        if (!prefersReducedMotion && typeof gsap !== 'undefined') {
+          gsap.fromTo('.motion-stage', { scale: 0.985 }, { scale: 1, duration: 0.35, ease: 'back.out(2)' });
+        }
+      });
     });
 
     const modeSpecs = {
@@ -115,6 +120,9 @@
         root.setProperty('--road-dur', m.road);
         if (telemetryEl) telemetryEl.textContent = m.telemetry;
         if (modeBadge) modeBadge.textContent = m.label;
+        if (!prefersReducedMotion && typeof gsap !== 'undefined') {
+          gsap.fromTo([telemetryEl, modeBadge], { y: -4, opacity: 0.3 }, { y: 0, opacity: 1, duration: 0.3, ease: 'power2.out' });
+        }
       });
     });
   };
@@ -208,11 +216,44 @@
 
     gsap.fromTo('.title-word', { yPercent: 115 }, { yPercent: 0, duration: 0.95, stagger: 0.1, ease: 'power4.out', delay: 0.25 });
 
+    gsap.to('.hero__ambient', {
+      scale: 1.12,
+      opacity: 0.75,
+      duration: 3.2,
+      yoyo: true,
+      repeat: -1,
+      ease: 'sine.inOut',
+    });
+
+    gsap.from('.motion-stage', {
+      opacity: 0,
+      y: 26,
+      scale: 0.96,
+      duration: 0.85,
+      delay: 0.4,
+      ease: 'power3.out',
+      clearProps: 'transform',
+    });
+
+    gsap.utils.toArray('.cards-grid').forEach((grid) => {
+      gsap.from(grid.querySelectorAll('.glass-card'), {
+        opacity: 0,
+        y: 24,
+        scale: 0.96,
+        duration: 0.65,
+        stagger: 0.09,
+        ease: 'power3.out',
+        clearProps: 'transform',
+        scrollTrigger: { trigger: grid, start: 'top 92%', once: true },
+      });
+    });
+
     gsap.utils.toArray('.reveal').forEach((el) => {
+      if (el.classList.contains('glass-card')) return;
       gsap.fromTo(
         el,
-        { opacity: 0, y: 24 },
-        { opacity: 1, y: 0, duration: 0.75, ease: 'power3.out', clearProps: 'transform', scrollTrigger: { trigger: el, start: 'top 96%', once: true } }
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', clearProps: 'transform', scrollTrigger: { trigger: el, start: 'top 95%', once: true } }
       );
     });
 
