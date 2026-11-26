@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VELO X7 — Карбоновые велосипеды и Motion-студия</title>
+  <meta name="description" content="Веломастерская VELO X7: шоссейные и гравийные велосипеды на карбоновой раме T1000, байк-фит и запись на тест-райд." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@500&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="is-loading">
+
+  <!-- Прелоадер -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="loader__line"></div>
+    <div class="loader__meta">
+      <span>VELO X7 · MOTION EDITION</span>
+      <span id="loaderPct">00%</span>
+    </div>
+  </div>
+
+  <div class="scroll-bar" aria-hidden="true"></div>
+  <div class="aura-cursor" aria-hidden="true">
+    <span class="aura-cursor__ring"></span>
+    <span class="aura-cursor__label"></span>
+  </div>
+
+  <!-- Навигация -->
+  <header class="header">
+    <nav class="nav container" aria-label="Основная навигация">
+      <a href="#hero" class="logo">
+        <span class="logo__m"><i class="m-blue"></i><i class="m-navy"></i><i class="m-red"></i></span>
+        <span>VELO X7</span>
+      </a>
+      <ul class="nav__links">
+        <li><a href="#hero">Обзор</a></li>
+        <li><a href="#specs">Параметры</a></li>
+        <li><a href="#details">Технологии</a></li>
+        <li><a href="#testdrive">Тест-райд</a></li>
+      </ul>
+      <a href="#testdrive" class="btn btn--m magnetic" data-cursor="Запись">
+        <span class="magnetic__inner">Записаться на тест-райд</span>
+      </a>
+      <button type="button" class="burger" id="burgerBtn" aria-label="Меню" aria-expanded="false">
+        <span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <div class="mob-drawer" id="mobDrawer" aria-hidden="true">
+    <a href="#hero">Обзор</a>
+    <a href="#specs">Параметры</a>
+    <a href="#details">Технологии</a>
+    <a href="#testdrive">Тест-райд</a>
+  </div>
+
+  <main>
+    <!-- Hero + Интерактивная 2D Motion-графика -->
+    <section id="hero" class="hero">
+      <div class="hero__ambient" aria-hidden="true"></div>
+      <div class="container hero__layout">
+        <div class="hero__inner">
+          <div class="hero__top reveal">
+            <span class="badge">ВЕЛОМАСТЕРСКАЯ · КАРБОН T1000</span>
+            <span class="mono" id="telemetryReadout">48 КМ/Ч · 310 ВТ</span>
+          </div>
+
+          <h1 class="hero__title">
+            <span class="title-mask"><span class="title-word">VELO X7</span></span>
+            <span class="title-mask"><span class="title-word text-accent">CARBON PRO</span></span>
+          </h1>
+
+          <p class="hero__lead reveal">
+            Лёгкий шоссейно-гравийный велосипед с аэродинамической рамой, гидравлическими дисковыми тормозами и точной геометрией посадки.
+          </p>
+
+          <!-- Пульт переключения режимов и цвета рамы -->
+          <div class="configurator reveal">
+            <div class="config-group">
+              <span class="config-label">Рама:</span>
+              <div class="swatches" role="group" aria-label="Цвет рамы">
+                <button type="button" class="swatch is-active" data-color="#38bdf8" style="background:#38bdf8;" aria-label="Свежий циан"></button>
+                <button type="button" class="swatch" data-color="#e2e8f0" style="background:#e2e8f0;" aria-label="Серебристый"></button>
+                <button type="button" class="swatch" data-color="#2563eb" style="background:#2563eb;" aria-label="Синий кобальт"></button>
+                <button type="button" class="swatch" data-color="#94a3b8" style="background:#94a3b8;" aria-label="Титан"></button>
+                <button type="button" class="swatch" data-color="#dc2626" style="background:#dc2626;" aria-label="Красный спорт"></button>
+              </div>
+            </div>
+
+            <div class="config-group">
+              <button type="button" class="cam-btn is-active" data-mode="sprint">Спринт</button>
+              <button type="button" class="cam-btn" data-mode="cruise">Круиз</button>
+              <button type="button" class="cam-btn" data-mode="climb">Подъём</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Сцена векторной Motion-графики -->
+        <div class="motion-stage reveal" aria-hidden="true">
+          <div class="motion-stage__grid"></div>
+          <svg class="bike-svg" viewBox="0 0 640 380" fill="none">
+            <!-- Аэродинамические потоки и дорога -->
+            <path class="wind-line" d="M70 105 C160 105, 220 92, 310 92" />
+            <path class="wind-line" d="M40 138 C140 138, 195 126, 265 126" />
+            <path class="wind-line" d="M100 170 C175 170, 220 164, 275 164" />
+            <line class="road-base" x1="40" y1="296" x2="600" y2="296" />
+            <line class="road-dash" x1="90" y1="316" x2="195" y2="316" />
+            <line class="road-dash" x1="255" y1="316" x2="385" y2="316" />
+            <line class="road-dash" x1="450" y1="316" x2="555" y2="316" />
+
+            <!-- Заднее колесо -->
+            <g class="wheel-spin" transform="translate(175, 240)">
+              <circle cx="0" cy="0" r="56" class="bike-tire" />
+              <circle cx="0" cy="0" r="44" class="bike-rim" />
+              <g class="wheel-spokes">
+                <line x1="-42" y1="0" x2="42" y2="0" />
+                <line x1="0" y1="-42" x2="0" y2="42" />
+                <line x1="-30" y1="-30" x2="30" y2="30" />
+                <line x1="-30" y1="30" x2="30" y2="-30" />
+              </g>
+              <circle cx="0" cy="0" r="8" class="bike-hub" />
+            </g>
+
+            <!-- Переднее колесо -->
+            <g class="wheel-spin" transform="translate(465, 240)">
+              <circle cx="0" cy="0" r="56" class="bike-tire" />
+              <circle cx="0" cy="0" r="44" class="bike-rim" />
+              <g class="wheel-spokes">
+                <line x1="-42" y1="0" x2="42" y2="0" />
+                <line x1="0" y1="-42" x2="0" y2="42" />
+                <line x1="-30" y1="-30" x2="30" y2="30" />
+                <line x1="-30" y1="30" x2="30" y2="-30" />
+              </g>
+              <circle cx="0" cy="0" r="8" class="bike-hub" />
+            </g>
+
+            <!-- Карбоновая рама, вилка, руль и седло -->
+            <g class="bike-chassis">
+              <path class="bike-frame" id="bikeFrameMain" d="M175 240 L282 240 L398 148 L254 148 Z" />
+              <path class="bike-frame" d="M175 240 L254 148 L244 114" />
+              <path class="bike-frame" d="M282 240 L254 148" />
+              <path class="bike-frame" d="M465 240 L398 148 L392 122 L428 122 Q446 122 446 138 Q446 150 430 150" />
+              <line class="bike-accent" x1="216" y1="114" x2="268" y2="114" />
+            </g>
+
+            <!-- Вращающаяся система шатунов -->
+            <g class="crank-spin" transform="translate(282, 240)">
+              <circle cx="0" cy="0" r="18" class="bike-rim" />
+              <line x1="0" y1="-24" x2="0" y2="24" class="bike-accent" />
+            </g>
+          </svg>
+          <div class="motion-stage__bar">
+            <span>АЭРОДИНАМИКА · CARBON T1000</span>
+            <span class="mono" id="modeBadge">РЕЖИМ: СПРИНТ</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Бегущая строка Motion-тикера -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span>CARBON MONOCOQUE T1000</span><i></i>
+        <span>ГИДРАВЛИКА 2×11</span><i></i>
+        <span>ВЕС 7.4 КГ</span><i></i>
+        <span>БАЙК-ФИТ И СБОРКА</span><i></i>
+        <span>CARBON MONOCOQUE T1000</span><i></i>
+        <span>ГИДРАВЛИКА 2×11</span><i></i>
+        <span>ВЕС 7.4 КГ</span><i></i>
+        <span>БАЙК-ФИТ И СБОРКА</span><i></i>
+      </div>
+    </div>
+
+    <!-- Характеристики -->
+    <section id="specs" class="section">
+      <div class="container">
+        <span class="eyebrow reveal">01 / Технические характеристики</span>
+        <h2 class="section-title reveal">Лёгкость и жёсткость рамы</h2>
+
+        <div class="metrics-bar reveal">
+          <div class="metric"><b><span class="counter" data-target="7">0</span>.4</b><span>кг · вес велосипеда в сборе</span></div>
+          <div class="metric"><b class="counter" data-target="22">0</b><span>скорости · трансмиссия 2×11</span></div>
+          <div class="metric"><b class="counter" data-target="28">0</b><span>мм · бескамерные покрышки</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Оснащение и сервис -->
+    <section id="details" class="section">
+      <div class="container">
+        <span class="eyebrow reveal">02 / Оснащение и сервис</span>
+        <h2 class="section-title reveal">Инженерия движения</h2>
+
+        <div class="cards-grid">
+          <article class="glass-card reveal" data-cursor="Рама">
+            <span class="glass-card__num">01 / FRAME</span>
+            <h3>Карбон Monocoque</h3>
+            <p>Внутренняя проводка тросов, конусный рулевой стакан и высокая торсионная жёсткость при разгоне.</p>
+          </article>
+
+          <article class="glass-card reveal" data-cursor="Тормоза">
+            <span class="glass-card__num">02 / CONTROL</span>
+            <h3>Дисковая гидравлика</h3>
+            <p>Уверенное торможение в любую погоду, жёсткие сквозные оси и промышленные подшипники во втулках.</p>
+          </article>
+
+          <article class="glass-card reveal" data-cursor="Байк-фит">
+            <span class="glass-card__num">03 / SERVICE</span>
+            <h3>Байк-фит и сборка</h3>
+            <p>Подбор ростовки, настройка посадки под анатомию райдера, нулевое ТО и сезонное обслуживание.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Запись на тест-райд -->
+    <section id="testdrive" class="section contact">
+      <div class="container contact__grid">
+        <div class="reveal">
+          <span class="eyebrow">03 / Тест-райд и подбор</span>
+          <h2 class="section-title">Протестировать VELO X7</h2>
+          <p class="contact__text">
+            Запишитесь на пробную поездку, подбор ростовки рамы или техническое обслуживание вашего велосипеда в нашей мастерской.
+          </p>
+        </div>
+
+        <form class="glass-card contact__form reveal" id="driveForm">
+          <input type="text" name="name" placeholder="Ваше имя" required />
+          <input type="tel" name="phone" placeholder="+7 (999) 000-00-00" required />
+          <select name="goal">
+            <option>Тест-райд и подбор ростовки</option>
+            <option>Сборка велосипеда под заказ</option>
+            <option>Техническое обслуживание и байк-фит</option>
+          </select>
+          <button type="submit" class="btn btn--m magnetic" data-cursor="Отправить">
+            <span class="magnetic__inner">Отправить заявку</span>
+          </button>
+          <p class="form-status" id="driveStatus" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <a href="#hero" class="logo">VELO X7</a>
+      <span>&copy; 2026 Веломастерская VELO X7</span>
+    </div>
+  </footer>
+
+  <!-- Lenis + GSAP + ScrollTrigger (без 3D) -->
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
