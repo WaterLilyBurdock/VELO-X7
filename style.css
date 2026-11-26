@@ -26,6 +26,7 @@
 
 html {
   font-size: 16px;
+  scroll-behavior: smooth;
   background: var(--bg);
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
@@ -123,49 +124,6 @@ ul { list-style: none; }
   transform-origin: left;
   z-index: 500;
   pointer-events: none;
-}
-
-/* Курсор */
-.aura-cursor { display: none; }
-
-@media (hover: hover) and (pointer: fine) {
-  .aura-cursor {
-    position: fixed;
-    top: 0; left: 0;
-    z-index: 9998;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-    will-change: transform;
-  }
-
-  .aura-cursor__ring {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    border: 1.5px solid rgba(56, 189, 248, 0.78);
-    transition: width 0.25s var(--ease), height 0.25s var(--ease), background-color 0.25s;
-  }
-
-  .aura-cursor__label {
-    position: absolute;
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #FFFFFF;
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-
-  .aura-cursor.is-hover .aura-cursor__ring {
-    width: 60px; height: 60px;
-    background: var(--m-blue);
-    border-color: var(--m-blue);
-  }
-
-  .aura-cursor.has-label .aura-cursor__label { opacity: 1; }
 }
 
 /* Навигация */

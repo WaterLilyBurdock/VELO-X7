@@ -8,7 +8,6 @@
   const loader = document.getElementById('loader');
   const loaderPct = document.getElementById('loaderPct');
   const loaderFill = document.getElementById('loaderFill');
-  const inIframe = window.self !== window.top;
 
   burger?.addEventListener('click', () => {
     const open = drawer?.classList.toggle('is-open');
@@ -72,17 +71,14 @@
     setLoaderProgress(pct);
   }, 70);
   const finishLoading = () => { clearInterval(pctTimer); hideLoader(); };
-  window.addEventListener('load', () => setTimeout(finishLoading, 380), { once: true });
+  if (document.readyState === 'complete') {
+    setTimeout(finishLoading, 380);
+  } else {
+    window.addEventListener('load', () => setTimeout(finishLoading, 380), { once: true });
+  }
   setTimeout(finishLoading, 1300);
 
   gsap.registerPlugin(ScrollTrigger);
-
-  if (typeof Lenis !== 'undefined') {
-    const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((t) => lenis.raf(t * 1000));
-    gsap.ticker.lagSmoothing(0);
-  }
 
   /* --------------------------------------------------------------------------
      2D Motion-графика велосипеда VELO X7 (GSAP)
@@ -195,7 +191,7 @@
     gsap.fromTo(
       el,
       { opacity: 0, y: 24 },
-      { opacity: 1, y: 0, duration: 0.75, ease: 'power3.out', clearProps: 'transform', scrollTrigger: { trigger: el, start: 'top 92%', once: true } }
+      { opacity: 1, y: 0, duration: 0.75, ease: 'power3.out', clearProps: 'transform', scrollTrigger: { trigger: el, start: 'top 96%', once: true } }
     );
   });
 
@@ -204,7 +200,7 @@
     const st = { v: 0 };
     ScrollTrigger.create({
       trigger: el,
-      start: 'top 92%',
+      start: 'top 96%',
       once: true,
       onEnter: () => {
         gsap.to(st, { v: target, duration: 1.4, ease: 'power2.out', onUpdate: () => { el.textContent = String(Math.round(st.v)); } });
@@ -212,44 +208,7 @@
     });
   });
 
-  const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  const cursor = document.querySelector('.aura-cursor');
-  const cursorLabel = document.querySelector('.aura-cursor__label');
-
-  /* Внутри iframe портфолио отключаем кастомный курсор, чтобы он не залагивал */
-  if (inIframe && cursor) cursor.remove();
-
-  if (canHover && cursor && !inIframe) {
-    let targetX = -100, targetY = -100, curX = -100, curY = -100, rafId = 0;
-    const stepCursor = () => {
-      curX += (targetX - curX) * 0.36;
-      curY += (targetY - curY) * 0.36;
-      cursor.style.transform = `translate3d(${curX}px, ${curY}px, 0) translate(-50%, -50%)`;
-      if (Math.abs(targetX - curX) > 0.4 || Math.abs(targetY - curY) > 0.4) {
-        rafId = requestAnimationFrame(stepCursor);
-      } else {
-        rafId = 0;
-      }
-    };
-    window.addEventListener('mousemove', (e) => {
-      targetX = e.clientX;
-      targetY = e.clientY;
-      if (!rafId) rafId = requestAnimationFrame(stepCursor);
-    }, { passive: true });
-
-    document.addEventListener('mouseover', (e) => {
-      const t = e.target.closest('a, button, .glass-card');
-      if (!t) return;
-      cursor.classList.add('is-hover');
-      const lbl = t.getAttribute('data-cursor');
-      if (lbl && cursorLabel) { cursorLabel.textContent = lbl; cursor.classList.add('has-label'); }
-    });
-    document.addEventListener('mouseout', (e) => {
-      const t = e.target.closest('a, button, .glass-card');
-      if (!t || t.contains(e.relatedTarget)) return;
-      cursor.classList.remove('is-hover', 'has-label');
-    });
-
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
     document.querySelectorAll('.magnetic').forEach((btn) => {
       const xTo = gsap.quickTo(btn, 'x', { duration: 0.35, ease: 'power3.out' });
       const yTo = gsap.quickTo(btn, 'y', { duration: 0.35, ease: 'power3.out' });
